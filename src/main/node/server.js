@@ -66,7 +66,6 @@ var _mapRequest = function(resource, host, path, prot, postProcess, useDom) {
 };
 
 var _processDom = function(data, res, postProcess) {
-	console.log("about to process the body ");
 	jsdom.env({
 		html: data,
 		scripts: [

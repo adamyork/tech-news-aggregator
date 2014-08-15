@@ -12,7 +12,7 @@ A simple web application that displays the top articles from various technology 
 
 - install node.js
 - clone project or download project zip
--run
+- run
 ````javascript
 npm install
 ````
