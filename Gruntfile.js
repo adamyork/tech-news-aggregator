@@ -1,16 +1,16 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig( {
+        pkg: grunt.file.readJSON( 'package.json' ),
         handlebars: {
             compile: {
                 options: {
                     namespace: "JST",
                     amd: false,
-                    processName: function(filename) {
-                        var directoryIndex = filename.lastIndexOf("/") + 1;
-                        var extensionIndex = filename.lastIndexOf("handlebars") - 1;
-                        filename = filename.slice(directoryIndex, extensionIndex);
+                    processName: function( filename ) {
+                        var directoryIndex = filename.lastIndexOf( "/" ) + 1;
+                        var extensionIndex = filename.lastIndexOf( "handlebars" ) - 1;
+                        filename = filename.slice( directoryIndex, extensionIndex );
                         return filename.toLowerCase();
                     }
                 },
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         },
         less: {
             options: {
-                paths: ['src/main/less'],
+                paths: [ 'src/main/less' ],
                 expand: true
             },
             files: {
@@ -64,23 +64,23 @@ module.exports = function(grunt) {
                 }
             },
             files: {
-                src: ["src/main/**/*.js", "build.js", "bower.json", "package.json"]
+                src: [ "src/main/**/*.js", "build.js", "bower.json", "package.json" ]
             }
         },
         concat: {
             files: {
-                src: ["bower_components/jquery/dist/jquery.js", "bower_components/handlebars/handlebars.runtime.js", "dist/js/templates.js", "bower_components/underscore/underscore.js", "src/main/js/App.js"],
+                src: [ "bower_components/jquery/dist/jquery.js", "bower_components/handlebars/handlebars.runtime.js", "dist/js/templates.js", "bower_components/underscore/underscore.js", "src/main/js/App.js" ],
                 dest: "dist/js/main.concat.js"
             }
         },
         copy: {
             ejs: {
-                files: [{
+                files: [ {
                     cwd: 'src/main/ejs',
                     src: 'index.ejs',
                     dest: 'dist/',
                     expand: true
-                }]
+                } ]
             }
         },
         uglify: {
@@ -93,25 +93,25 @@ module.exports = function(grunt) {
             },
             main: {
                 files: {
-                    "dist/js/main.min.js": ["dist/js/main.concat.js"]
+                    "dist/js/main.min.js": [ "dist/js/main.concat.js" ]
                 }
             },
             node: {
                 files: {
-                    "dist/server.js": ["src/main/node/server.js"]
+                    "dist/server.js": [ "src/main/node/server.js" ]
                 }
             }
         },
-        clean: ["dist/js/main.concat.js", "dist/js/templates.js"]
-    });
+        clean: [ "dist/js/main.concat.js", "dist/js/templates.js" ]
+    } );
 
-    grunt.loadNpmTasks("grunt-contrib-handlebars");
-    grunt.loadNpmTasks("grunt-contrib-less");
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-copy");
-    grunt.registerTask("default", ["jshint", "handlebars", "less", "concat", "copy:ejs", "uglify:main", "uglify:node" ,"clean"]);
+    grunt.loadNpmTasks( "grunt-contrib-handlebars" );
+    grunt.loadNpmTasks( "grunt-contrib-less" );
+    grunt.loadNpmTasks( "grunt-contrib-jshint" );
+    grunt.loadNpmTasks( "grunt-contrib-concat" );
+    grunt.loadNpmTasks( "grunt-contrib-uglify" );
+    grunt.loadNpmTasks( "grunt-contrib-clean" );
+    grunt.loadNpmTasks( "grunt-contrib-copy" );
+    grunt.registerTask( "default", [ "jshint", "handlebars", "less", "concat", "copy:ejs", "uglify:main", "uglify:node", "clean" ] );
 
 };
