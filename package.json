@@ -6,7 +6,10 @@
     "scripts": {
         "postinstall": "node_modules/.bin/bower install"
     },
-    "repository": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/radAdam/tech-news-aggregator"
+    },
     "author": "Adam York",
     "license": "ISC",
     "dependencies": {
