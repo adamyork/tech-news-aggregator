@@ -16,6 +16,7 @@ html body {
   height: 100%;
   margin: 0;
   background-color: #ccd6e0;
+  overflow: hidden;
 }
 .header_font {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
@@ -40,6 +41,8 @@ html body {
   width: 25%;
   float: left;
   text-align: center;
+  max-height: 675px;
+  overflow-y: auto;
 }
 .header {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
