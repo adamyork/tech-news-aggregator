@@ -76,10 +76,19 @@ module.exports = function( grunt ) {
         copy: {
             ejs: {
                 files: [ {
-                    cwd: 'src/main/ejs',
-                    src: 'index.ejs',
-                    dest: 'dist/',
+                    cwd: "src/main/ejs",
+                    src: "index.ejs",
+                    dest: "dist/",
                     expand: true
+                } ]
+            },
+            resource: {
+                files: [ {
+                    cwd: "src/main/resource/image",
+                    src: "*.png",
+                    dest: "dist/css/image",
+                    expand: true,
+                    flatten: true
                 } ]
             }
         },
@@ -112,6 +121,6 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( "grunt-contrib-uglify" );
     grunt.loadNpmTasks( "grunt-contrib-clean" );
     grunt.loadNpmTasks( "grunt-contrib-copy" );
-    grunt.registerTask( "default", [ "jshint", "handlebars", "less", "concat", "copy:ejs", "uglify:main", "uglify:node", "clean" ] );
+    grunt.registerTask( "default", [ "jshint", "handlebars", "less", "concat", "copy:ejs", "copy:resource", "uglify:main", "uglify:node", "clean" ] );
 
 };

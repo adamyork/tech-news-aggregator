@@ -3,15 +3,17 @@
 @font_family: Helvetica,arial,freesans,clean,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";
 
 @font_size_header : 24pt;
-@font_color_header : @app_blue;
+@font_color_header : @app_header_color;
 @font_size_article : 12pt;
 
 .app_anchors {
-    color: @app_orange;
+    color: @app_article_color;
     text-decoration:none;
-    &:hover,
+    &:hover {
+        color: @app_article_color_hover;
+    }
     &:visited,
     &:active {
-        color: @app_red;
+        color: @app_article_color_visited;
     }
 }
