@@ -18,8 +18,6 @@ html body {
   height: 100%;
   margin: 0;
   background-color: #576696;
-  background-image: url("/image/stripe.png");
-  background-repeat: repeat-x;
   overflow: hidden;
 }
 .header_font {
