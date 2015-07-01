@@ -7,7 +7,8 @@ html {
         width: 100%;
         height: 100%;
         margin: 0;
-        background-color: @app_grey;
+        background-color: @app_bg_color;
+        overflow: hidden;
     }
 }
 
@@ -31,6 +32,8 @@ html {
     width: 25%;
     float: left;
     text-align: center;
+    max-height: 675px;
+    overflow-y: auto;
 }
 
 .header {

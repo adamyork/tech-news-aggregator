@@ -1,31 +1,31 @@
-module.exports = function( grunt ) {
-
-    grunt.initConfig( {
-        pkg: grunt.file.readJSON( 'package.json' ),
+module.exports = function(grunt) {
+    'use strict';
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         handlebars: {
             compile: {
                 options: {
-                    namespace: "JST",
+                    namespace: 'JST',
                     amd: false,
-                    processName: function( filename ) {
-                        var directoryIndex = filename.lastIndexOf( "/" ) + 1;
-                        var extensionIndex = filename.lastIndexOf( "handlebars" ) - 1;
-                        filename = filename.slice( directoryIndex, extensionIndex );
+                    processName: function(filename) {
+                        var directoryIndex = filename.lastIndexOf('/') + 1;
+                        var extensionIndex = filename.lastIndexOf('handlebars') - 1;
+                        filename = filename.slice(directoryIndex, extensionIndex);
                         return filename.toLowerCase();
                     }
                 },
-                src: "src/main/handlebars/*.handlebars",
-                dest: "dist/js/templates.js"
+                src: 'src/main/handlebars/*.handlebars',
+                dest: 'dist/js/templates.js'
             }
         },
         less: {
             options: {
-                paths: [ 'src/main/less' ],
+                paths: ['src/main/less'],
                 expand: true
             },
             files: {
-                src: "src/main/less/main.less",
-                dest: "dist/css/main.css"
+                src: 'src/main/less/main.less',
+                dest: 'dist/css/main.css'
             }
         },
         jshint: {
@@ -60,58 +60,78 @@ module.exports = function( grunt ) {
                     assert: false,
                     test: false,
                     should: false,
-                    "throw": false
+                    'throw': false
                 }
             },
             files: {
-                src: [ "src/main/**/*.js", "build.js", "bower.json", "package.json" ]
+                src: ['src/main/**/*.js', 'build.js', 'bower.json', 'package.json']
             }
         },
         concat: {
             files: {
-                src: [ "bower_components/jquery/dist/jquery.js", "bower_components/handlebars/handlebars.runtime.js", "dist/js/templates.js", "bower_components/underscore/underscore.js", "src/main/js/App.js" ],
-                dest: "dist/js/main.concat.js"
+                src: ['dist/js/templates.js', 'src/main/js/App.js'],
+                dest: 'dist/js/main.concat.js'
             }
         },
         copy: {
             ejs: {
-                files: [ {
+            files: [{
                     cwd: 'src/main/ejs',
                     src: 'index.ejs',
                     dest: 'dist/',
                     expand: true
-                } ]
+                }]
+            },
+            resource: {
+                files: [{
+                    cwd: 'src/main/resource/image',
+                    src: '*.png',
+                    dest: 'dist/css/image',
+                    expand: true,
+                    flatten: true
+                }]
+            },
+            libs: {
+                files: [{
+                    expand: true,
+                    dest: 'dist/js/lib',
+                    flatten: true,
+                    src: ['bower_components/jquery/dist/jquery.js',
+                        'bower_components/handlebars/handlebars.runtime.js',
+                        'bower_components/underscore/underscore.js'
+                    ]
+                }]
             }
         },
         uglify: {
             options: {
                 mangle: true,
                 preserveComments: false,
-                compress: true,
-                banner: "/**This content is derived. Do not edit.**/\n",
-                footer: "\n/**End Content**/"
+                compress: {},
+                banner: '/**This content is derived. Do not edit.**/\n',
+                footer: '\n/**End Content**/'
             },
             main: {
                 files: {
-                    "dist/js/main.min.js": [ "dist/js/main.concat.js" ]
+                    'dist/js/main.min.js': ['dist/js/main.concat.js']
                 }
             },
             node: {
                 files: {
-                    "dist/server.js": [ "src/main/node/server.js" ]
+                    'dist/server.js': ['src/main/node/server.js']
                 }
             }
         },
-        clean: [ "dist/js/main.concat.js", "dist/js/templates.js" ]
-    } );
+        clean: ['dist/js/main.concat.js', 'dist/js/templates.js']
+    });
 
-    grunt.loadNpmTasks( "grunt-contrib-handlebars" );
-    grunt.loadNpmTasks( "grunt-contrib-less" );
-    grunt.loadNpmTasks( "grunt-contrib-jshint" );
-    grunt.loadNpmTasks( "grunt-contrib-concat" );
-    grunt.loadNpmTasks( "grunt-contrib-uglify" );
-    grunt.loadNpmTasks( "grunt-contrib-clean" );
-    grunt.loadNpmTasks( "grunt-contrib-copy" );
-    grunt.registerTask( "default", [ "jshint", "handlebars", "less", "concat", "copy:ejs", "uglify:main", "uglify:node", "clean" ] );
-
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.registerTask('default', ['jshint', 'handlebars', 'less', 'concat', 'copy:ejs', 'copy:resource', 'copy:libs',
+        'uglify:main', 'uglify:node', 'clean']);
 };
