@@ -1,13 +1,13 @@
 .app_anchors {
-  color: #d8d7cb;
+  color: #D8D7CB;
   text-decoration: none;
 }
 .app_anchors:hover {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .app_anchors:visited,
 .app_anchors:active {
-  color: #7bbbc7;
+  color: #7BBBC7;
 }
 html {
   width: 100%;
@@ -23,20 +23,20 @@ html body {
 .header_font {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 24pt;
-  color: #fcfbef;
+  color: #FCFBEF;
 }
 .article_font {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 12pt;
-  color: #d8d7cb;
+  color: #D8D7CB;
   text-decoration: none;
 }
 .article_font:hover {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .article_font:visited,
 .article_font:active {
-  color: #7bbbc7;
+  color: #7BBBC7;
 }
 #columns {
   padding-top: 20px;
@@ -51,7 +51,7 @@ html body {
 .header {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 24pt;
-  color: #fcfbef;
+  color: #FCFBEF;
   border-bottom: 1px solid;
 }
 .article {
@@ -61,13 +61,13 @@ html body {
 .article a {
   font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 12pt;
-  color: #d8d7cb;
+  color: #D8D7CB;
   text-decoration: none;
 }
 .article a:hover {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 .article a:visited,
 .article a:active {
-  color: #7bbbc7;
+  color: #7BBBC7;
 }

@@ -1,15 +1,18 @@
 'use strict';
 $(document).ready(function() {
 
-    var JST = window.JST;
+    let JST = window.JST;
 
-    var _names = ['Hacker News', 'Lobsters', 'Arstechnica', 'Slashdot'];
-    var _paths = ['/hn', '/lob', '/ars', '/sd'];
-    var _columns;
+    let names = ['Hacker News', 'Lobsters', 'Arstechnica', 'Slashdot'];
+    let paths = ['/hn', '/lob', '/ars', '/sd'];
+    var columns;
 
-    var _addColumn = function(name, path, index) {
-        $.get(path, function(data) {
-            var column = _columns.eq(index);
+    let addColumn = (name, path, index) => {
+        console.log('index is ' + index);
+        let inx = index;
+        $.get(path, (data) => {
+            console.log('index here is ' + inx);
+            let column = columns.eq(inx);
             column.append(JST.header({
                 source: name
             }));
@@ -22,14 +25,14 @@ $(document).ready(function() {
         });
     };
 
-    var _init = function() {
+    let init = () => {
         $('body').append(JST.columns());
-        _columns = $('body').children('#columns').children('.column');
-        _.each(_names, function(name, i) {
-            _addColumn(name, _paths[i], i);
+        columns = $('body').children('#columns').children('.column');
+        _.each(names, (name, i) => {
+            addColumn(name, paths[i], i);
         });
     };
 
-    _init();
+    init();
 
 });

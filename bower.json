@@ -1,10 +1,10 @@
 {
     "name": "tech-news-aggregator",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "dependencies": {
-        "less": "1.7.4",
-        "jquery": "2.1.1",
-        "handlebars": "1.3.0",
-        "underscore": "1.6.0"
+        "less": "*",
+        "jquery": "*",
+        "handlebars": "*",
+        "underscore": "*"
     }
 }
