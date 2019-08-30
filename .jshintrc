@@ -16,7 +16,7 @@
     ],
     "debug": false,
     "devel": true,
-    "es5": true,
+    "esversion": 6
     "strict": true,
     "globalstrict": false,
     "asi": false,

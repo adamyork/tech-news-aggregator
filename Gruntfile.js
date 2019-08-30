@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                 curly: true,
                 indent: 4,
                 eqeqeq: true,
+                esversion: 6,
                 globals: {
                     Backbone: false,
                     define: false,
@@ -129,7 +130,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.registerTask('default', ['jshint', 'handlebars', 'less', 'concat', 'copy:ejs', 'copy:resource', 'copy:libs',

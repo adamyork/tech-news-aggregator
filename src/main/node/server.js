@@ -1,58 +1,57 @@
 'use strict';
-var express = require('express');
-var http = require('http');
-var https = require('https');
-var cheerio = require('cheerio');
-var app = express();
-var und = require('underscore-node');
+const express = require('express');
+const https = require('https');
+const cheerio = require('cheerio');
+const und = require('underscore-node');
+let app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname);
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.render('index.ejs', {
         layout: false
     });
 });
 
-var _toTitleCase = function(str) {
+let toTitleCase = function(str) {
     var words = str.split(' ');
-    words = und.map(words, function(word) {
-        var firstChar = word.substr(0, 1);
-        var remaining = word.substr(1, word.length);
+    words = und.map(words, (word) => {
+        let firstChar = word.substr(0, 1);
+        let remaining = word.substr(1, word.length);
         return firstChar.toUpperCase() + remaining;
     });
     return words.join(' ');
 };
 
-var _getResource = function(options, prot, callback) {
-    var req = prot.get(options, function(res) {
+let getResource = function(options, prot, callback) {
+    let req = prot.get(options, function(res) {
         var chunks = '';
-        res.on('data', function(chunk) {
+        res.on('data', (chunk) => {
             chunks += chunk;
         });
-        res.on('end', function() {
+        res.on('end', () => {
             callback(chunks);
         });
-        req.on('error', function(e) {
+        req.on('error', (e) => {
             callback(e.message, true);
         });
     });
 };
 
-var _processDom = function(data, res, postProcess) {
-    var $ = cheerio.load(data);
-    var items = postProcess($);
+let processDom = function(data, res, postProcess) {
+    let $ = cheerio.load(data);
+    let items = postProcess($);
     res.send({
         articles: items
     });
 };
 
-var _mapRequest = function(resource, host, path, prot, postProcess, useDom) {
+let mapRequest = function(resource, host, path, prot, postProcess, useDom) {
     app.get(resource, function(req, res) {
-        _getResource({
+        getResource({
             host: host,
             path: path
-        }, prot, function(data, error) {
+        }, prot, (data, error) => {
             if (error) {
                 res.send({
                     articles: [{
@@ -63,7 +62,7 @@ var _mapRequest = function(resource, host, path, prot, postProcess, useDom) {
                 return;
             }
             if (useDom) {
-                _processDom(data, res, postProcess);
+                processDom(data, res, postProcess);
             } else {
                 res.send({
                     articles: postProcess(data)
@@ -73,60 +72,68 @@ var _mapRequest = function(resource, host, path, prot, postProcess, useDom) {
     });
 };
 
-var _postProcessHackerNews = function($) {
+let postProcessHackerNews = function($) {
     var items = $('.athing td:nth-child(3) a');
-    items = und.map(items, function(item) {
-        var target = item.attribs.href;
-        var base = 'https://news.ycombinator.com/';
+    items = und.map(items, (item) => {
+        let target = item.attribs.href;
+        let base = 'https://news.ycombinator.com/';
         return {
             href: (target.indexOf('item?id=') === -1) ? target : base + target,
-            desc: _toTitleCase(item.children[0].data)
+            desc: toTitleCase(item.children[0].data||'broken')
         };
+    });
+    items = und.filter(items, (item) => {
+        return item.desc !== 'Broken';
     });
     return items;
 };
 
-var _postProcessLobsters = function($) {
+let postProcessLobsters = function($) {
     var items = $('.link a');
-    items = und.map(items, function(item) {
+    items = und.map(items, (item) => {
         return {
             href: item.attribs.href,
-            desc: _toTitleCase(item.children[0].data)
+            desc: toTitleCase(item.children[0].data)
         };
     });
     return items;
 };
 
-var _postProcessArstechnica = function($) {
-    var items = $('.post article > a').toArray();
-    items = und.map(items, function(item) {
-        var descText = item.attribs.href.toString();
-        var parts = descText.split('/');
-        var descParsed = parts[parts.length - 2];
-        var noHyphens = descParsed.split('-').join(' ');
+let postProcessArstechnica = function($) {
+    var items = $('.tease.article > a').toArray();
+    items = und.map(items, (item) => {
+        let descText = item.attribs.href.toString();
+        let parts = descText.split('/');
+        let descParsed = parts[parts.length - 2];
+        let noHyphens = descParsed.split('-').join(' ');
         return {
             href: item.attribs.href,
-            desc: _toTitleCase(noHyphens)
+            desc: toTitleCase(noHyphens)
         };
     });
     return items;
 };
 
-var _postProcessSlashdot = function($) {
+let postProcessSlashdot = function($) {
     var items = $('.story span:first-child a').toArray();
-    items = und.map(items, function(item) {
+    items = und.map(items, (item) => {
         return {
             href: item.attribs.href,
-            desc: _toTitleCase(item.children[0].data)
+            desc: toTitleCase(item.children[0].data)
         };
+    });
+    items = und.filter(items, (item) => {
+        let regEx = RegExp('\\(.+\\.','g');
+        let found = regEx.test(item.desc);
+        return !found;
     });
     return items;
 };
 
-_mapRequest('/hn', 'news.ycombinator.com', '/', https, _postProcessHackerNews, true);
-_mapRequest('/lob', 'lobste.rs', '/', https, _postProcessLobsters, true);
-_mapRequest('/ars', 'arstechnica.com', '/', http, _postProcessArstechnica, true);
-_mapRequest('/sd', 'slashdot.org', '/', http, _postProcessSlashdot, true);
+mapRequest('/hn', 'news.ycombinator.com', '/', https, postProcessHackerNews, true);
+mapRequest('/lob', 'lobste.rs', '/', https, postProcessLobsters, true);
+mapRequest('/ars', 'arstechnica.com', '/', https, postProcessArstechnica, true);
+mapRequest('/sd', 'slashdot.org', '/', https, postProcessSlashdot, true);
 
 app.use('/', express.static(__dirname));
 app.listen(8080);
