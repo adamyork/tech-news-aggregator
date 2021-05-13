@@ -1,6 +1,6 @@
 {
     "name": "tech-news-aggregator",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Aggregtes articles from hacker news, lobster, arstechnica, and slashdot.",
     "main": "server.js",
     "scripts": {
