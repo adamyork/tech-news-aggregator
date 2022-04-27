@@ -1,8 +1,8 @@
 'use strict';
 const express = require('express');
-const https = require('https');
 const cheerio = require('cheerio');
 const und = require('underscore-node');
+const axios = require('axios');
 let app = express();
 
 app.set('view engine', 'ejs');
@@ -23,20 +23,17 @@ let toTitleCase = function(str) {
     return words.join(' ');
 };
 
-let getResource = function(options, prot, callback) {
-    let req = prot.get(options, function(res) {
-        var chunks = '';
-        res.on('data', (chunk) => {
-            chunks += chunk;
-        });
-        res.on('end', () => {
-            callback(chunks);
-        });
-        req.on('error', (e) => {
-            callback(e.message, true);
-        });
+let getResource = function(options, callback) {
+    axios
+    .get('https://' + options.host + options.path)
+    .then(res => {
+        callback(res.data);
+    })
+    .catch(error => {
+        callback(error, true);
     });
 };
+
 
 let processDom = function(data, res, postProcess) {
     let $ = cheerio.load(data);
@@ -46,12 +43,12 @@ let processDom = function(data, res, postProcess) {
     });
 };
 
-let mapRequest = function(resource, host, path, prot, postProcess, useDom) {
+let mapRequest = function(resource, host, path, postProcess, useDom) {
     app.get(resource, function(req, res) {
         getResource({
             host: host,
             path: path
-        }, prot, (data, error) => {
+        }, (data, error) => {
             if (error) {
                 res.send({
                     articles: [{
@@ -130,10 +127,10 @@ let postProcessSlashdot = function($) {
     return items;
 };
 
-mapRequest('/hn', 'news.ycombinator.com', '/', https, postProcessHackerNews, true);
-mapRequest('/lob', 'lobste.rs', '/', https, postProcessLobsters, true);
-mapRequest('/ars', 'arstechnica.com', '/', https, postProcessArstechnica, true);
-mapRequest('/sd', 'slashdot.org', '/', https, postProcessSlashdot, true);
+mapRequest('/hn', 'news.ycombinator.com', '/', postProcessHackerNews, true);
+mapRequest('/lob', 'lobste.rs', '/', postProcessLobsters, true);
+mapRequest('/ars', 'arstechnica.com', '/', postProcessArstechnica, true);
+mapRequest('/sd', 'slashdot.org', '/', postProcessSlashdot, true);
 
 app.use('/', express.static(__dirname));
 app.listen(8080);

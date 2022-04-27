@@ -4,7 +4,7 @@
     "description": "Aggregtes articles from hacker news, lobster, arstechnica, and slashdot.",
     "main": "server.js",
     "scripts": {
-        "postinstall": "node_modules/.bin/bower install"
+        "postinstall": "node_modules\\.bin\\bower install"
     },
     "repository": {
         "type": "git",
@@ -18,7 +18,8 @@
         "ejs": "*",
         "express": "*",
         "grunt-contrib-uglify-es": "github:gruntjs/grunt-contrib-uglify#harmony",
-        "underscore-node": "*"
+        "underscore-node": "*",
+        "axios": "*"
     },
     "devDependencies": {
         "grunt": "*",
